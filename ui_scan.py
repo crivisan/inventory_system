@@ -1,10 +1,11 @@
 from PyQt6.QtWidgets import (
     QWidget, QLabel, QLineEdit, QTextEdit, QPushButton, QVBoxLayout, QMessageBox
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 import database
 
 class ScanWindow(QWidget):
+    back_to_menu_requested = pyqtSignal()
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Lesemodus – Scannen")
@@ -49,5 +50,5 @@ class ScanWindow(QWidget):
 
     def back(self):
         self.close()
-        if self.parent:
-            self.parent.show()
+        self.back_to_menu_requested.emit()
+

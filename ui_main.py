@@ -2,15 +2,17 @@ from PyQt6.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QTextEdit, QPushButton,
     QVBoxLayout, QHBoxLayout, QMessageBox, QListWidget, QDateEdit
 )
-from PyQt6.QtCore import QDate
+from PyQt6.QtCore import QDate, pyqtSignal
 import database
 import barcode_utils
 import utils
 import export_utils
 
 class InventoryApp(QWidget):
-    def __init__(self):
-        super().__init__()
+    back_to_menu_requested = pyqtSignal()
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.setWindowTitle("Land-lieben Inventar System")
         self.setMinimumWidth(600)
 
@@ -49,6 +51,9 @@ class InventoryApp(QWidget):
 
         self.export_btn = QPushButton("Exportieren (CSV)")
         self.export_btn.clicked.connect(self.export_csv)
+        
+        self.back_btn = QPushButton("⬅️ Zurück zum Hauptmenü")
+        self.back_btn.clicked.connect(self.go_back)
 
         self.products_list = QListWidget()
 
@@ -67,6 +72,7 @@ class InventoryApp(QWidget):
         layout.addWidget(self.remarks_input)
         layout.addWidget(self.add_button)
         layout.addWidget(self.export_btn)
+        layout.addWidget(self.back_btn)
 
         layout.addSpacing(10)
         layout.addWidget(QLabel("🔍 Produktinformation anzeigen"))
@@ -165,3 +171,7 @@ class InventoryApp(QWidget):
     def export_csv(self):
         path = export_utils.export_to_csv()
         QMessageBox.information(self, "Exportiert", f"CSV-Datei gespeichert unter:\n{path}")
+
+    def go_back(self):
+        self.close()
+        self.back_to_menu_requested.emit()
