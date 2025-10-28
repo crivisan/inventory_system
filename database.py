@@ -1,42 +1,58 @@
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path("./data/inventory.db")
+DB_PATH = Path("data/inventory.db")
 DB_PATH.parent.mkdir(exist_ok=True)
 
+def get_connection():
+    return sqlite3.connect(DB_PATH)
+
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     c = conn.cursor()
-    c.execute('''
+    c.execute("""
         CREATE TABLE IF NOT EXISTS products (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             code TEXT UNIQUE NOT NULL,
-            quantity INTEGER DEFAULT 0
+            purchase_date TEXT,
+            assigned_to TEXT,
+            sub_project TEXT,
+            storage_location TEXT,
+            value REAL,
+            remarks TEXT
         )
-    ''')
+    """)
     conn.commit()
     conn.close()
 
-def add_product(name, code, quantity=0):
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute('INSERT INTO products (name, code, quantity) VALUES (?, ?, ?)', (name, code, quantity))
-    conn.commit()
-    conn.close()
-
-def get_product_by_code(code):
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    c.execute('SELECT * FROM products WHERE code=?', (code,))
-    result = c.fetchone()
-    conn.close()
-    return result
+def add_product_safe(**kwargs):
+    """Insert product inside a transaction."""
+    conn = get_connection()
+    try:
+        with conn:  # ensures commit/rollback automatically
+            fields = ", ".join(kwargs.keys())
+            placeholders = ", ".join(["?"] * len(kwargs))
+            values = tuple(kwargs.values())
+            conn.execute(f"INSERT INTO products ({fields}) VALUES ({placeholders})", values)
+    except Exception as e:
+        conn.rollback()
+        raise e
+    finally:
+        conn.close()
 
 def get_all_products():
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     c = conn.cursor()
-    c.execute('SELECT * FROM products')
+    c.execute("SELECT * FROM products ORDER BY id DESC")
     rows = c.fetchall()
     conn.close()
     return rows
+
+def get_product_by_code(code):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT * FROM products WHERE code=?", (code,))
+    row = c.fetchone()
+    conn.close()
+    return row
