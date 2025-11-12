@@ -69,7 +69,7 @@ def migrate_old_schema(conn):
     if not cols:
         return False
 
-    print("🧱 Old schema detected, migrating...")
+    print("Old schema detected, migrating...")
     cur.execute("ALTER TABLE products RENAME TO products_old;")
     create_schema(conn)
 
@@ -95,7 +95,7 @@ def init_db():
         if len(cols) < 10:  # very old schema heuristic
             migrate_old_schema(conn)
         else:
-            # ✅ Ensure 'options' table exists even in existing DB
+            # Ensure 'options' table exists even in existing DB
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS options (
                     field TEXT NOT NULL,

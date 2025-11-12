@@ -20,7 +20,8 @@ class InventoryApp(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Land-lieben Inventar System – Verwaltung")
-        self.setMinimumWidth(650)
+        self.setMinimumWidth(1000)
+        self.setMinimumHeight(800)
 
 
         # Load Gemeinde + VG data
@@ -245,11 +246,12 @@ class InventoryApp(QWidget):
             "lieferant": self.lieferant
         }.items():
             combo.clear()
-            combo.addItem("")  # 👈 empty default option
+            combo.addItem("")  # empty default option
             combo.addItems(database.get_options(field))
     
     def open_table_window(self):
         self.table_window = TableWindow()
+        self.table_window.move(self.x() + self.width() - 10, self.y())
         self.table_window.show()
 
 

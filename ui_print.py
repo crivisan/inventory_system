@@ -4,10 +4,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import pyqtSignal, Qt, QTimer, QEventLoop
 import database
-import label_printer
 import utils
-import json
-from pathlib import Path
 
 
 class PrintWindow(QWidget):

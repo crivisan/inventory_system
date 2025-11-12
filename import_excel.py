@@ -6,8 +6,8 @@ from utils import generate_code
 
 
 # === CONFIGURATION ===
-EXCEL_PATH = Path("./data/Inventar_2025.xlsx")   # 👈 update this path
-SHEET_NAME = "table2"                                         # or the sheet name, e.g. "Inventar"
+EXCEL_PATH = Path("./data/Inventar_2025.xlsx")  
+SHEET_NAME = "table2"                                       
 GEMEINDEN_PATH = Path("./data/gemeinden.json")           # same file used by app
 
 
@@ -23,11 +23,11 @@ def normalize_value(v):
 
 def import_excel():
     if not EXCEL_PATH.exists():
-        print(f"❌ Excel file not found at {EXCEL_PATH}")
+        print(f"Excel file not found at {EXCEL_PATH}")
         return
 
     if not GEMEINDEN_PATH.exists():
-        print(f"❌ Gemeindeliste not found at {GEMEINDEN_PATH}")
+        print(f"Gemeindeliste not found at {GEMEINDEN_PATH}")
         return
 
     # Load abbreviation map
@@ -36,7 +36,7 @@ def import_excel():
 
     abbr_map = {**gdata["VGs"], **gdata["Gemeinden"]}
 
-    print(f"📥 Reading Excel file: {EXCEL_PATH}")
+    print(f"Reading Excel file: {EXCEL_PATH}")
     df = pd.read_excel(EXCEL_PATH, sheet_name=SHEET_NAME, engine="openpyxl")
 
     column_map = {
@@ -98,9 +98,9 @@ def import_excel():
             database.add_product_safe(**data)
             imported += 1
         except Exception as e:
-            print(f"⚠️ Error importing {gemeinde}: {e}")
+            print(f"Error importing {gemeinde}: {e}")
 
-    print(f"✅ Imported {imported}/{total_rows} rows successfully.")
+    print(f"Imported {imported}/{total_rows} rows successfully.")
 
 
 if __name__ == "__main__":
