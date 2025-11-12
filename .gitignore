@@ -8,6 +8,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
 .Python
 build/
 develop-eggs/
@@ -27,6 +28,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# CPython specific compiled files
+*.cpython-*.pyc
 
 # Common hidden files
 .*.swp
