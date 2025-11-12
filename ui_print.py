@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QLabel, QPushButton, QListWidget, QListWidgetItem,
-    QCheckBox, QMessageBox, QHBoxLayout, QComboBox, QApplication
+    QMessageBox, QHBoxLayout, QComboBox, QApplication
 )
-from PyQt6.QtCore import pyqtSignal, Qt, QTimer, QEventLoop
+from PyQt6.QtCore import pyqtSignal, Qt, QTimer
 import database
 import utils
 

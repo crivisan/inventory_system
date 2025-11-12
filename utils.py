@@ -1,10 +1,6 @@
 import datetime
 import database
 
-
-import datetime
-import database
-
 def generate_code(abbr: str, purchase_date: str) -> str:
     """
     Generate LL-ABR-YYMM-#### style code.
