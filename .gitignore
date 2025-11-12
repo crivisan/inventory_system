@@ -1,4 +1,5 @@
 # .data directory and all its contents
+data/
 .data/
 .data/*
 
